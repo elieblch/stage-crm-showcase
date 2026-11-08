@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+:root {
+  --color-brand: #1D9E75;
+  --color-brand-50: #E6F5EF;
+  --color-brand-600: #0F6E56;
+
+  --color-bg: #FAFAF9;
+  --color-card: #FFFFFF;
+  --color-card-muted: #F4F4F2;
+
+  --color-line: #E8E8E4;
+  --color-line-subtle: #F0F0EC;
+  --color-border: var(--color-line);
+
+  --color-ink: #18181B;
+  --color-ink-muted: #71717A;
+  --color-ink-faint: #A1A1AA;
+
+  --radius-input: 6px;
+  --radius-card: 8px;
+  --radius-card-lg: 12px;
+  --radius-pill: 9999px;
+}
+
+/* ─── Base ─── */
+html, body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+}
+body {
+  font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, .font-display {
+  font-family: "Instrument Serif", "Fraunces", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.font-mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D4D4D0; border-radius: 8px; border: 2px solid var(--color-bg); }
+::-webkit-scrollbar-thumb:hover { background: #A1A1AA; }
+
+/* ─── Focus ─── */
+input:focus, select:focus, textarea:focus, button:focus-visible {
+  outline: none;
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px rgba(29,158,117,0.12);
+}
+button:focus { outline: none; }
+
+/* ─── Score badges sobres ─── */
+.score-high { background: #E6F5EF; color: #0A5A46; }
+.score-medium { background: #FEF7E0; color: #7A5D0B; }
+.score-low { background: #F4F4F2; color: #71717A; }
+
+/* ─── Cards hover ─── */
+.card-hover {
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+.card-hover:hover {
+  border-color: #D4D4D0;
+  transform: translateY(-1px);
+}
+
+button {
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 100ms ease;
+}
+button:not(:disabled):active { transform: scale(0.98); }
+
+.table-row-hover:hover { background: #F4F4F2; }
+.transition-default { transition: all 150ms ease; }
+.transition-expand { transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1); }
+
+.kanban-col-header {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+[draggable="true"] { cursor: grab; }
+[draggable="true"]:active { cursor: grabbing; opacity: 0.7; }
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+.claude-thinking { animation: pulse-soft 1.8s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
