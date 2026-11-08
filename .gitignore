@@ -1,0 +1,58 @@
+# ══════════════════════════════════════════════════════════
+# Stage CRM — .gitignore
+# Objectif : le dépôt ne contient QUE du code. Aucune donnée
+# personnelle (base, CV/LM PDF, dumps, secrets) n'est versionnée.
+# ══════════════════════════════════════════════════════════
+
+# ── Secrets / configuration locale ────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Données personnelles : dumps & sauvegardes SQL ────────
+*.sql
+*.dump
+*.sql.gz
+backups/
+dumps/
+
+# ── Données personnelles : fichiers uploadés (CV / LM PDF) ─
+uploads/
+storage/
+media/
+docker/data/
+
+# ── Python ────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ── Node / Next.js ────────────────────────────────────────
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*
+yarn-error.log*
+
+# ── IDE / éditeurs ────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── OS ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Divers ────────────────────────────────────────────────
+*.log

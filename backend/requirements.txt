@@ -1,0 +1,25 @@
+# ── API Framework ─────────────────────────────────────────
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.19
+
+# ── Base de données ───────────────────────────────────────
+sqlalchemy[asyncio]==2.0.36
+asyncpg==0.30.0
+
+# ── Migrations (schéma versionné — remplace create_all à terme) ──
+alembic==1.14.0
+
+# ── Utils ─────────────────────────────────────────────────
+pydantic==2.10.4
+pydantic-settings==2.7.1
+python-dotenv==1.0.1
+
+# ── Agenda / export iCalendar (génération locale, gratuite) ──
+icalendar==5.0.13
+
+# ── Tests ─────────────────────────────────────────────────
+pytest==8.3.4
+pytest-asyncio==0.25.2
+httpx==0.28.1
+aiosqlite==0.20.0

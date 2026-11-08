@@ -1,0 +1,60 @@
+services:
+  # ── PostgreSQL ──────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-stage_crm}
+      POSTGRES_USER: ${DB_USER:-stage_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-stage_password}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-stage_user} -d ${DB_NAME:-stage_crm}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ── Backend FastAPI ─────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      # Toujours calculée depuis les variables : le backend parle à `db` sur le
+      # réseau Docker interne (port 5432), quel que soit DB_PORT côté hôte.
+      DATABASE_URL: postgresql+asyncpg://${DB_USER:-stage_user}:${DB_PASSWORD:-stage_password}@db:5432/${DB_NAME:-stage_crm}
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - ./backend:/app
+      - user_uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # ── Frontend Next.js ────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    depends_on:
+      - backend
+    environment:
+      # URL appelée depuis le NAVIGATEUR → doit pointer sur le port publié côté hôte.
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:${BACKEND_PORT:-8000}}
+
+volumes:
+  pgdata:
+  user_uploads:
